@@ -1,16 +1,16 @@
-exports.id = 58;
-exports.ids = [58];
+exports.id = 576;
+exports.ids = [576];
 exports.modules = {
 
-/***/ 9859:
+/***/ 3641:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 const cp = __webpack_require__(2081);
-const parse = __webpack_require__(3069);
-const enoent = __webpack_require__(6775);
+const parse = __webpack_require__(7450);
+const enoent = __webpack_require__(4217);
 
 function spawn(command, args, options) {
     // Parse the arguments
@@ -49,7 +49,7 @@ module.exports._enoent = enoent;
 
 /***/ }),
 
-/***/ 6775:
+/***/ 4217:
 /***/ ((module) => {
 
 "use strict";
@@ -116,16 +116,16 @@ module.exports = {
 
 /***/ }),
 
-/***/ 3069:
+/***/ 7450:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 const path = __webpack_require__(1017);
-const resolveCommand = __webpack_require__(6841);
-const escape = __webpack_require__(1445);
-const readShebang = __webpack_require__(9574);
+const resolveCommand = __webpack_require__(8);
+const escape = __webpack_require__(3201);
+const readShebang = __webpack_require__(2590);
 
 const isWin = process.platform === 'win32';
 const isExecutableRegExp = /\.(?:com|exe)$/i;
@@ -215,7 +215,7 @@ module.exports = parse;
 
 /***/ }),
 
-/***/ 1445:
+/***/ 3201:
 /***/ ((module) => {
 
 "use strict";
@@ -268,14 +268,14 @@ module.exports.argument = escapeArgument;
 
 /***/ }),
 
-/***/ 9574:
+/***/ 2590:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 const fs = __webpack_require__(7147);
-const shebangCommand = __webpack_require__(5382);
+const shebangCommand = __webpack_require__(9344);
 
 function readShebang(command) {
     // Read the first 150 bytes from the file
@@ -299,15 +299,15 @@ module.exports = readShebang;
 
 /***/ }),
 
-/***/ 6841:
+/***/ 8:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
 const path = __webpack_require__(1017);
-const which = __webpack_require__(6189);
-const getPathKey = __webpack_require__(851);
+const which = __webpack_require__(6594);
+const getPathKey = __webpack_require__(8855);
 
 function resolveCommandAttempt(parsed, withoutPathExt) {
     const env = parsed.options.env || process.env;
@@ -359,136 +359,168 @@ module.exports = resolveCommand;
 
 /***/ }),
 
-/***/ 5162:
+/***/ 1784:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
+var fs = __webpack_require__(7147)
+var core
+if (process.platform === 'win32' || global.TESTING_WINDOWS) {
+  core = __webpack_require__(1345)
+} else {
+  core = __webpack_require__(3045)
+}
 
-const {PassThrough: PassThroughStream} = __webpack_require__(2781);
+module.exports = isexe
+isexe.sync = sync
 
-module.exports = options => {
-	options = {...options};
+function isexe (path, options, cb) {
+  if (typeof options === 'function') {
+    cb = options
+    options = {}
+  }
 
-	const {array} = options;
-	let {encoding} = options;
-	const isBuffer = encoding === 'buffer';
-	let objectMode = false;
+  if (!cb) {
+    if (typeof Promise !== 'function') {
+      throw new TypeError('callback not provided')
+    }
 
-	if (array) {
-		objectMode = !(encoding || isBuffer);
-	} else {
-		encoding = encoding || 'utf8';
-	}
+    return new Promise(function (resolve, reject) {
+      isexe(path, options || {}, function (er, is) {
+        if (er) {
+          reject(er)
+        } else {
+          resolve(is)
+        }
+      })
+    })
+  }
 
-	if (isBuffer) {
-		encoding = null;
-	}
+  core(path, options || {}, function (er, is) {
+    // ignore EACCES because that just means we aren't allowed to run it
+    if (er) {
+      if (er.code === 'EACCES' || options && options.ignoreErrors) {
+        er = null
+        is = false
+      }
+    }
+    cb(er, is)
+  })
+}
 
-	const stream = new PassThroughStream({objectMode});
-
-	if (encoding) {
-		stream.setEncoding(encoding);
-	}
-
-	let length = 0;
-	const chunks = [];
-
-	stream.on('data', chunk => {
-		chunks.push(chunk);
-
-		if (objectMode) {
-			length = chunks.length;
-		} else {
-			length += chunk.length;
-		}
-	});
-
-	stream.getBufferedValue = () => {
-		if (array) {
-			return chunks;
-		}
-
-		return isBuffer ? Buffer.concat(chunks, length) : chunks.join('');
-	};
-
-	stream.getBufferedLength = () => length;
-
-	return stream;
-};
+function sync (path, options) {
+  // my kingdom for a filtered catch
+  try {
+    return core.sync(path, options || {})
+  } catch (er) {
+    if (options && options.ignoreErrors || er.code === 'EACCES') {
+      return false
+    } else {
+      throw er
+    }
+  }
+}
 
 
 /***/ }),
 
-/***/ 1049:
+/***/ 3045:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
+module.exports = isexe
+isexe.sync = sync
 
-const {constants: BufferConstants} = __webpack_require__(4300);
-const stream = __webpack_require__(2781);
-const {promisify} = __webpack_require__(3837);
-const bufferStream = __webpack_require__(5162);
+var fs = __webpack_require__(7147)
 
-const streamPipelinePromisified = promisify(stream.pipeline);
-
-class MaxBufferError extends Error {
-	constructor() {
-		super('maxBuffer exceeded');
-		this.name = 'MaxBufferError';
-	}
+function isexe (path, options, cb) {
+  fs.stat(path, function (er, stat) {
+    cb(er, er ? false : checkStat(stat, options))
+  })
 }
 
-async function getStream(inputStream, options) {
-	if (!inputStream) {
-		throw new Error('Expected a stream');
-	}
-
-	options = {
-		maxBuffer: Infinity,
-		...options
-	};
-
-	const {maxBuffer} = options;
-	const stream = bufferStream(options);
-
-	await new Promise((resolve, reject) => {
-		const rejectPromise = error => {
-			// Don't retrieve an oversized buffer.
-			if (error && stream.getBufferedLength() <= BufferConstants.MAX_LENGTH) {
-				error.bufferedData = stream.getBufferedValue();
-			}
-
-			reject(error);
-		};
-
-		(async () => {
-			try {
-				await streamPipelinePromisified(inputStream, stream);
-				resolve();
-			} catch (error) {
-				rejectPromise(error);
-			}
-		})();
-
-		stream.on('data', () => {
-			if (stream.getBufferedLength() > maxBuffer) {
-				rejectPromise(new MaxBufferError());
-			}
-		});
-	});
-
-	return stream.getBufferedValue();
+function sync (path, options) {
+  return checkStat(fs.statSync(path), options)
 }
 
-module.exports = getStream;
-module.exports.buffer = (stream, options) => getStream(stream, {...options, encoding: 'buffer'});
-module.exports.array = (stream, options) => getStream(stream, {...options, array: true});
-module.exports.MaxBufferError = MaxBufferError;
+function checkStat (stat, options) {
+  return stat.isFile() && checkMode(stat, options)
+}
+
+function checkMode (stat, options) {
+  var mod = stat.mode
+  var uid = stat.uid
+  var gid = stat.gid
+
+  var myUid = options.uid !== undefined ?
+    options.uid : process.getuid && process.getuid()
+  var myGid = options.gid !== undefined ?
+    options.gid : process.getgid && process.getgid()
+
+  var u = parseInt('100', 8)
+  var g = parseInt('010', 8)
+  var o = parseInt('001', 8)
+  var ug = u | g
+
+  var ret = (mod & o) ||
+    (mod & g) && gid === myGid ||
+    (mod & u) && uid === myUid ||
+    (mod & ug) && myUid === 0
+
+  return ret
+}
 
 
 /***/ }),
 
-/***/ 237:
+/***/ 1345:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = isexe
+isexe.sync = sync
+
+var fs = __webpack_require__(7147)
+
+function checkPathExt (path, options) {
+  var pathext = options.pathExt !== undefined ?
+    options.pathExt : process.env.PATHEXT
+
+  if (!pathext) {
+    return true
+  }
+
+  pathext = pathext.split(';')
+  if (pathext.indexOf('') !== -1) {
+    return true
+  }
+  for (var i = 0; i < pathext.length; i++) {
+    var p = pathext[i].toLowerCase()
+    if (p && path.substr(-p.length).toLowerCase() === p) {
+      return true
+    }
+  }
+  return false
+}
+
+function checkStat (stat, path, options) {
+  if (!stat.isSymbolicLink() && !stat.isFile()) {
+    return false
+  }
+  return checkPathExt(path, options)
+}
+
+function isexe (path, options, cb) {
+  fs.stat(path, function (er, stat) {
+    cb(er, er ? false : checkStat(stat, path, options))
+  })
+}
+
+function sync (path, options) {
+  return checkStat(fs.statSync(path), path, options)
+}
+
+
+/***/ }),
+
+/***/ 3148:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -537,7 +569,7 @@ module.exports = function (/*streams...*/) {
 
 /***/ }),
 
-/***/ 851:
+/***/ 8855:
 /***/ ((module) => {
 
 "use strict";
@@ -561,12 +593,12 @@ module.exports["default"] = pathKey;
 
 /***/ }),
 
-/***/ 5382:
+/***/ 9344:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-const shebangRegex = __webpack_require__(11);
+const shebangRegex = __webpack_require__(9156);
 
 module.exports = (string = '') => {
 	const match = string.match(shebangRegex);
@@ -588,7 +620,7 @@ module.exports = (string = '') => {
 
 /***/ }),
 
-/***/ 11:
+/***/ 9156:
 /***/ ((module) => {
 
 "use strict";
@@ -598,7 +630,7 @@ module.exports = /^#!(.*)/;
 
 /***/ }),
 
-/***/ 6189:
+/***/ 6594:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const isWindows = process.platform === 'win32' ||
@@ -607,7 +639,7 @@ const isWindows = process.platform === 'win32' ||
 
 const path = __webpack_require__(1017)
 const COLON = isWindows ? ';' : ':'
-const isexe = __webpack_require__(4555)
+const isexe = __webpack_require__(1784)
 
 const getNotFoundError = (cmd) =>
   Object.assign(new Error(`not found: ${cmd}`), { code: 'ENOENT' })
@@ -730,7 +762,7 @@ which.sync = whichSync
 
 /***/ }),
 
-/***/ 3058:
+/***/ 576:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -756,7 +788,7 @@ var external_node_child_process_ = __webpack_require__(7718);
 // EXTERNAL MODULE: external "node:process"
 var external_node_process_ = __webpack_require__(7742);
 // EXTERNAL MODULE: ./node_modules/.pnpm/cross-spawn@7.0.3/node_modules/cross-spawn/index.js
-var cross_spawn = __webpack_require__(9859);
+var cross_spawn = __webpack_require__(3641);
 ;// CONCATENATED MODULE: ./node_modules/.pnpm/strip-final-newline@3.0.0/node_modules/strip-final-newline/index.js
 function stripFinalNewline(input) {
 	const LF = typeof input === 'string' ? '\n' : '\n'.charCodeAt();
@@ -947,27 +979,24 @@ onetime.callCount = function_ => {
 
 // EXTERNAL MODULE: external "node:os"
 var external_node_os_ = __webpack_require__(612);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@4.3.0/node_modules/human-signals/build/src/realtime.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@5.0.0/node_modules/human-signals/build/src/realtime.js
 
-const getRealtimeSignals=function(){
+const getRealtimeSignals=()=>{
 const length=SIGRTMAX-SIGRTMIN+1;
-return Array.from({length},getRealtimeSignal);
+return Array.from({length},getRealtimeSignal)
 };
 
-const getRealtimeSignal=function(value,index){
-return{
+const getRealtimeSignal=(value,index)=>({
 name:`SIGRT${index+1}`,
 number:SIGRTMIN+index,
 action:"terminate",
 description:"Application-specific signal (realtime)",
-standard:"posix"};
-
-};
+standard:"posix"
+});
 
 const SIGRTMIN=34;
 const SIGRTMAX=64;
-//# sourceMappingURL=realtime.js.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@4.3.0/node_modules/human-signals/build/src/core.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@5.0.0/node_modules/human-signals/build/src/core.js
 
 
 const SIGNALS=[
@@ -976,272 +1005,272 @@ name:"SIGHUP",
 number:1,
 action:"terminate",
 description:"Terminal closed",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGINT",
 number:2,
 action:"terminate",
 description:"User interruption with CTRL-C",
-standard:"ansi"},
-
+standard:"ansi"
+},
 {
 name:"SIGQUIT",
 number:3,
 action:"core",
 description:"User interruption with CTRL-\\",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGILL",
 number:4,
 action:"core",
 description:"Invalid machine instruction",
-standard:"ansi"},
-
+standard:"ansi"
+},
 {
 name:"SIGTRAP",
 number:5,
 action:"core",
 description:"Debugger breakpoint",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGABRT",
 number:6,
 action:"core",
 description:"Aborted",
-standard:"ansi"},
-
+standard:"ansi"
+},
 {
 name:"SIGIOT",
 number:6,
 action:"core",
 description:"Aborted",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGBUS",
 number:7,
 action:"core",
 description:
 "Bus error due to misaligned, non-existing address or paging error",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGEMT",
 number:7,
 action:"terminate",
 description:"Command should be emulated but is not implemented",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGFPE",
 number:8,
 action:"core",
 description:"Floating point arithmetic error",
-standard:"ansi"},
-
+standard:"ansi"
+},
 {
 name:"SIGKILL",
 number:9,
 action:"terminate",
 description:"Forced termination",
 standard:"posix",
-forced:true},
-
+forced:true
+},
 {
 name:"SIGUSR1",
 number:10,
 action:"terminate",
 description:"Application-specific signal",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGSEGV",
 number:11,
 action:"core",
 description:"Segmentation fault",
-standard:"ansi"},
-
+standard:"ansi"
+},
 {
 name:"SIGUSR2",
 number:12,
 action:"terminate",
 description:"Application-specific signal",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGPIPE",
 number:13,
 action:"terminate",
 description:"Broken pipe or socket",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGALRM",
 number:14,
 action:"terminate",
 description:"Timeout or timer",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGTERM",
 number:15,
 action:"terminate",
 description:"Termination",
-standard:"ansi"},
-
+standard:"ansi"
+},
 {
 name:"SIGSTKFLT",
 number:16,
 action:"terminate",
 description:"Stack is empty or overflowed",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGCHLD",
 number:17,
 action:"ignore",
 description:"Child process terminated, paused or unpaused",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGCLD",
 number:17,
 action:"ignore",
 description:"Child process terminated, paused or unpaused",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGCONT",
 number:18,
 action:"unpause",
 description:"Unpaused",
 standard:"posix",
-forced:true},
-
+forced:true
+},
 {
 name:"SIGSTOP",
 number:19,
 action:"pause",
 description:"Paused",
 standard:"posix",
-forced:true},
-
+forced:true
+},
 {
 name:"SIGTSTP",
 number:20,
 action:"pause",
 description:"Paused using CTRL-Z or \"suspend\"",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGTTIN",
 number:21,
 action:"pause",
 description:"Background process cannot read terminal input",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGBREAK",
 number:21,
 action:"terminate",
 description:"User interruption with CTRL-BREAK",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGTTOU",
 number:22,
 action:"pause",
 description:"Background process cannot write to terminal output",
-standard:"posix"},
-
+standard:"posix"
+},
 {
 name:"SIGURG",
 number:23,
 action:"ignore",
 description:"Socket received out-of-band data",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGXCPU",
 number:24,
 action:"core",
 description:"Process timed out",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGXFSZ",
 number:25,
 action:"core",
 description:"File too big",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGVTALRM",
 number:26,
 action:"terminate",
 description:"Timeout or timer",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGPROF",
 number:27,
 action:"terminate",
 description:"Timeout or timer",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGWINCH",
 number:28,
 action:"ignore",
 description:"Terminal window size changed",
-standard:"bsd"},
-
+standard:"bsd"
+},
 {
 name:"SIGIO",
 number:29,
 action:"terminate",
 description:"I/O is available",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGPOLL",
 number:29,
 action:"terminate",
 description:"Watched event",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGINFO",
 number:29,
 action:"ignore",
 description:"Request for process information",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGPWR",
 number:30,
 action:"terminate",
 description:"Device running out of power",
-standard:"systemv"},
-
+standard:"systemv"
+},
 {
 name:"SIGSYS",
 number:31,
 action:"core",
 description:"Invalid system call",
-standard:"other"},
-
+standard:"other"
+},
 {
 name:"SIGUNUSED",
 number:31,
 action:"terminate",
 description:"Invalid system call",
-standard:"other"}];
-//# sourceMappingURL=core.js.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@4.3.0/node_modules/human-signals/build/src/signals.js
+standard:"other"
+}];
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@5.0.0/node_modules/human-signals/build/src/signals.js
 
 
 
@@ -1249,10 +1278,10 @@ standard:"other"}];
 
 
 
-const getSignals=function(){
+const getSignals=()=>{
 const realtimeSignals=getRealtimeSignals();
 const signals=[...SIGNALS,...realtimeSignals].map(normalizeSignal);
-return signals;
+return signals
 };
 
 
@@ -1261,23 +1290,22 @@ return signals;
 
 
 
-const normalizeSignal=function({
+const normalizeSignal=({
 name,
 number:defaultNumber,
 description,
 action,
 forced=false,
-standard})
-{
+standard
+})=>{
 const{
-signals:{[name]:constantSignal}}=
-external_node_os_.constants;
+signals:{[name]:constantSignal}
+}=external_node_os_.constants;
 const supported=constantSignal!==undefined;
 const number=supported?constantSignal:defaultNumber;
-return{name,number,description,supported,action,forced,standard};
+return{name,number,description,supported,action,forced,standard}
 };
-//# sourceMappingURL=signals.js.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@4.3.0/node_modules/human-signals/build/src/main.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/human-signals@5.0.0/node_modules/human-signals/build/src/main.js
 
 
 
@@ -1285,45 +1313,40 @@ return{name,number,description,supported,action,forced,standard};
 
 
 
-const getSignalsByName=function(){
+const getSignalsByName=()=>{
 const signals=getSignals();
-return Object.fromEntries(signals.map(getSignalByName));
+return Object.fromEntries(signals.map(getSignalByName))
 };
 
-const getSignalByName=function({
+const getSignalByName=({
 name,
 number,
 description,
 supported,
 action,
 forced,
-standard})
-{
-return[
-name,
-{name,number,description,supported,action,forced,standard}];
-
-};
+standard
+})=>[name,{name,number,description,supported,action,forced,standard}];
 
 const signalsByName=getSignalsByName();
 
 
 
 
-const getSignalsByNumber=function(){
+const getSignalsByNumber=()=>{
 const signals=getSignals();
 const length=SIGRTMAX+1;
 const signalsA=Array.from({length},(value,number)=>
-getSignalByNumber(number,signals));
-
-return Object.assign({},...signalsA);
+getSignalByNumber(number,signals)
+);
+return Object.assign({},...signalsA)
 };
 
-const getSignalByNumber=function(number,signals){
+const getSignalByNumber=(number,signals)=>{
 const signal=findSignalByNumber(number,signals);
 
 if(signal===undefined){
-return{};
+return{}
 }
 
 const{name,description,supported,action,forced,standard}=signal;
@@ -1335,26 +1358,26 @@ description,
 supported,
 action,
 forced,
-standard}};
-
-
+standard
+}
+}
 };
 
 
 
-const findSignalByNumber=function(number,signals){
+const findSignalByNumber=(number,signals)=>{
 const signal=signals.find(({name})=>external_node_os_.constants.signals[name]===number);
 
 if(signal!==undefined){
-return signal;
+return signal
 }
 
-return signals.find((signalA)=>signalA.number===number);
+return signals.find((signalA)=>signalA.number===number)
 };
 
 const signalsByNumber=getSignalsByNumber();
-//# sourceMappingURL=main.js.map
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/error.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/error.js
+
 
 
 const getErrorPrefix = ({timedOut, timeout, errorCode, signal, signalDescription, exitCode, isCanceled}) => {
@@ -1393,7 +1416,7 @@ const makeError = ({
 	timedOut,
 	isCanceled,
 	killed,
-	parsed: {options: {timeout}},
+	parsed: {options: {timeout, cwd = external_node_process_.cwd()}},
 }) => {
 	// `signal` and `exitCode` emitted on `spawned.on('exit')` event can be `null`.
 	// We normalize them to `undefined`
@@ -1424,6 +1447,7 @@ const makeError = ({
 	error.signalDescription = signalDescription;
 	error.stdout = stdout;
 	error.stderr = stderr;
+	error.cwd = cwd;
 
 	if (all !== undefined) {
 		error.all = all;
@@ -1441,7 +1465,7 @@ const makeError = ({
 	return error;
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/stdio.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/stdio.js
 const aliases = ['stdin', 'stdout', 'stderr'];
 
 const hasAlias = options => aliases.some(alias => options[alias] !== undefined);
@@ -1492,9 +1516,323 @@ const normalizeStdioNode = options => {
 	return [...stdio, 'ipc'];
 };
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/signal-exit@3.0.7/node_modules/signal-exit/index.js
-var signal_exit = __webpack_require__(3289);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/kill.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/signal-exit@4.1.0/node_modules/signal-exit/dist/mjs/signals.js
+/**
+ * This is not the set of all possible signals.
+ *
+ * It IS, however, the set of all signals that trigger
+ * an exit on either Linux or BSD systems.  Linux is a
+ * superset of the signal names supported on BSD, and
+ * the unknown signals just fail to register, so we can
+ * catch that easily enough.
+ *
+ * Windows signals are a different set, since there are
+ * signals that terminate Windows processes, but don't
+ * terminate (or don't even exist) on Posix systems.
+ *
+ * Don't bother with SIGKILL.  It's uncatchable, which
+ * means that we can't fire any callbacks anyway.
+ *
+ * If a user does happen to register a handler on a non-
+ * fatal signal like SIGWINCH or something, and then
+ * exit, it'll end up firing `process.emit('exit')`, so
+ * the handler will be fired anyway.
+ *
+ * SIGBUS, SIGFPE, SIGSEGV and SIGILL, when not raised
+ * artificially, inherently leave the process in a
+ * state from which it is not safe to try and enter JS
+ * listeners.
+ */
+const signals = [];
+signals.push('SIGHUP', 'SIGINT', 'SIGTERM');
+if (process.platform !== 'win32') {
+    signals.push('SIGALRM', 'SIGABRT', 'SIGVTALRM', 'SIGXCPU', 'SIGXFSZ', 'SIGUSR2', 'SIGTRAP', 'SIGSYS', 'SIGQUIT', 'SIGIOT'
+    // should detect profiler and enable/disable accordingly.
+    // see #21
+    // 'SIGPROF'
+    );
+}
+if (process.platform === 'linux') {
+    signals.push('SIGIO', 'SIGPOLL', 'SIGPWR', 'SIGSTKFLT');
+}
+//# sourceMappingURL=signals.js.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/signal-exit@4.1.0/node_modules/signal-exit/dist/mjs/index.js
+// Note: since nyc uses this module to output coverage, any lines
+// that are in the direct sync flow of nyc's outputCoverage are
+// ignored, since we can never get coverage for them.
+// grab a reference to node's real process object right away
+
+
+const processOk = (process) => !!process &&
+    typeof process === 'object' &&
+    typeof process.removeListener === 'function' &&
+    typeof process.emit === 'function' &&
+    typeof process.reallyExit === 'function' &&
+    typeof process.listeners === 'function' &&
+    typeof process.kill === 'function' &&
+    typeof process.pid === 'number' &&
+    typeof process.on === 'function';
+const kExitEmitter = Symbol.for('signal-exit emitter');
+const global = globalThis;
+const ObjectDefineProperty = Object.defineProperty.bind(Object);
+// teeny special purpose ee
+class Emitter {
+    emitted = {
+        afterExit: false,
+        exit: false,
+    };
+    listeners = {
+        afterExit: [],
+        exit: [],
+    };
+    count = 0;
+    id = Math.random();
+    constructor() {
+        if (global[kExitEmitter]) {
+            return global[kExitEmitter];
+        }
+        ObjectDefineProperty(global, kExitEmitter, {
+            value: this,
+            writable: false,
+            enumerable: false,
+            configurable: false,
+        });
+    }
+    on(ev, fn) {
+        this.listeners[ev].push(fn);
+    }
+    removeListener(ev, fn) {
+        const list = this.listeners[ev];
+        const i = list.indexOf(fn);
+        /* c8 ignore start */
+        if (i === -1) {
+            return;
+        }
+        /* c8 ignore stop */
+        if (i === 0 && list.length === 1) {
+            list.length = 0;
+        }
+        else {
+            list.splice(i, 1);
+        }
+    }
+    emit(ev, code, signal) {
+        if (this.emitted[ev]) {
+            return false;
+        }
+        this.emitted[ev] = true;
+        let ret = false;
+        for (const fn of this.listeners[ev]) {
+            ret = fn(code, signal) === true || ret;
+        }
+        if (ev === 'exit') {
+            ret = this.emit('afterExit', code, signal) || ret;
+        }
+        return ret;
+    }
+}
+class SignalExitBase {
+}
+const signalExitWrap = (handler) => {
+    return {
+        onExit(cb, opts) {
+            return handler.onExit(cb, opts);
+        },
+        load() {
+            return handler.load();
+        },
+        unload() {
+            return handler.unload();
+        },
+    };
+};
+class SignalExitFallback extends SignalExitBase {
+    onExit() {
+        return () => { };
+    }
+    load() { }
+    unload() { }
+}
+class SignalExit extends SignalExitBase {
+    // "SIGHUP" throws an `ENOSYS` error on Windows,
+    // so use a supported signal instead
+    /* c8 ignore start */
+    #hupSig = mjs_process.platform === 'win32' ? 'SIGINT' : 'SIGHUP';
+    /* c8 ignore stop */
+    #emitter = new Emitter();
+    #process;
+    #originalProcessEmit;
+    #originalProcessReallyExit;
+    #sigListeners = {};
+    #loaded = false;
+    constructor(process) {
+        super();
+        this.#process = process;
+        // { <signal>: <listener fn>, ... }
+        this.#sigListeners = {};
+        for (const sig of signals) {
+            this.#sigListeners[sig] = () => {
+                // If there are no other listeners, an exit is coming!
+                // Simplest way: remove us and then re-send the signal.
+                // We know that this will kill the process, so we can
+                // safely emit now.
+                const listeners = this.#process.listeners(sig);
+                let { count } = this.#emitter;
+                // This is a workaround for the fact that signal-exit v3 and signal
+                // exit v4 are not aware of each other, and each will attempt to let
+                // the other handle it, so neither of them do. To correct this, we
+                // detect if we're the only handler *except* for previous versions
+                // of signal-exit, and increment by the count of listeners it has
+                // created.
+                /* c8 ignore start */
+                const p = process;
+                if (typeof p.__signal_exit_emitter__ === 'object' &&
+                    typeof p.__signal_exit_emitter__.count === 'number') {
+                    count += p.__signal_exit_emitter__.count;
+                }
+                /* c8 ignore stop */
+                if (listeners.length === count) {
+                    this.unload();
+                    const ret = this.#emitter.emit('exit', null, sig);
+                    /* c8 ignore start */
+                    const s = sig === 'SIGHUP' ? this.#hupSig : sig;
+                    if (!ret)
+                        process.kill(process.pid, s);
+                    /* c8 ignore stop */
+                }
+            };
+        }
+        this.#originalProcessReallyExit = process.reallyExit;
+        this.#originalProcessEmit = process.emit;
+    }
+    onExit(cb, opts) {
+        /* c8 ignore start */
+        if (!processOk(this.#process)) {
+            return () => { };
+        }
+        /* c8 ignore stop */
+        if (this.#loaded === false) {
+            this.load();
+        }
+        const ev = opts?.alwaysLast ? 'afterExit' : 'exit';
+        this.#emitter.on(ev, cb);
+        return () => {
+            this.#emitter.removeListener(ev, cb);
+            if (this.#emitter.listeners['exit'].length === 0 &&
+                this.#emitter.listeners['afterExit'].length === 0) {
+                this.unload();
+            }
+        };
+    }
+    load() {
+        if (this.#loaded) {
+            return;
+        }
+        this.#loaded = true;
+        // This is the number of onSignalExit's that are in play.
+        // It's important so that we can count the correct number of
+        // listeners on signals, and don't wait for the other one to
+        // handle it instead of us.
+        this.#emitter.count += 1;
+        for (const sig of signals) {
+            try {
+                const fn = this.#sigListeners[sig];
+                if (fn)
+                    this.#process.on(sig, fn);
+            }
+            catch (_) { }
+        }
+        this.#process.emit = (ev, ...a) => {
+            return this.#processEmit(ev, ...a);
+        };
+        this.#process.reallyExit = (code) => {
+            return this.#processReallyExit(code);
+        };
+    }
+    unload() {
+        if (!this.#loaded) {
+            return;
+        }
+        this.#loaded = false;
+        signals.forEach(sig => {
+            const listener = this.#sigListeners[sig];
+            /* c8 ignore start */
+            if (!listener) {
+                throw new Error('Listener not defined for signal: ' + sig);
+            }
+            /* c8 ignore stop */
+            try {
+                this.#process.removeListener(sig, listener);
+                /* c8 ignore start */
+            }
+            catch (_) { }
+            /* c8 ignore stop */
+        });
+        this.#process.emit = this.#originalProcessEmit;
+        this.#process.reallyExit = this.#originalProcessReallyExit;
+        this.#emitter.count -= 1;
+    }
+    #processReallyExit(code) {
+        /* c8 ignore start */
+        if (!processOk(this.#process)) {
+            return 0;
+        }
+        this.#process.exitCode = code || 0;
+        /* c8 ignore stop */
+        this.#emitter.emit('exit', this.#process.exitCode, null);
+        return this.#originalProcessReallyExit.call(this.#process, this.#process.exitCode);
+    }
+    #processEmit(ev, ...args) {
+        const og = this.#originalProcessEmit;
+        if (ev === 'exit' && processOk(this.#process)) {
+            if (typeof args[0] === 'number') {
+                this.#process.exitCode = args[0];
+                /* c8 ignore start */
+            }
+            /* c8 ignore start */
+            const ret = og.call(this.#process, ev, ...args);
+            /* c8 ignore start */
+            this.#emitter.emit('exit', this.#process.exitCode, null);
+            /* c8 ignore stop */
+            return ret;
+        }
+        else {
+            return og.call(this.#process, ev, ...args);
+        }
+    }
+}
+const mjs_process = globalThis.process;
+// wrap so that we call the method on the actual handler, without
+// exporting it directly.
+const { 
+/**
+ * Called when the process is exiting, whether via signal, explicit
+ * exit, or running out of stuff to do.
+ *
+ * If the global process object is not suitable for instrumentation,
+ * then this will be a no-op.
+ *
+ * Returns a function that may be used to unload signal-exit.
+ */
+onExit, 
+/**
+ * Load the listeners.  Likely you never need to call this, unless
+ * doing a rather deep integration with signal-exit functionality.
+ * Mostly exposed for the benefit of testing.
+ *
+ * @internal
+ */
+load, 
+/**
+ * Unload the listeners.  Likely you never need to call this, unless
+ * doing a rather deep integration with signal-exit functionality.
+ * Mostly exposed for the benefit of testing.
+ *
+ * @internal
+ */
+unload, } = signalExitWrap(processOk(mjs_process) ? new SignalExit(mjs_process) : new SignalExitFallback());
+//# sourceMappingURL=index.js.map
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/kill.js
 
 
 
@@ -1589,7 +1927,7 @@ const setExitHandler = async (spawned, {cleanup, detached}, timedPromise) => {
 		return timedPromise;
 	}
 
-	const removeExitHandler = signal_exit(() => {
+	const removeExitHandler = onExit(() => {
 		spawned.kill();
 	});
 
@@ -1631,7 +1969,7 @@ function isTransformStream(stream) {
 		&& typeof stream._transform === 'function';
 }
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/pipe.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/pipe.js
 
 
 
@@ -1675,11 +2013,315 @@ const addPipeMethods = spawned => {
 	}
 };
 
-// EXTERNAL MODULE: ./node_modules/.pnpm/get-stream@6.0.1/node_modules/get-stream/index.js
-var get_stream = __webpack_require__(1049);
+// EXTERNAL MODULE: external "node:timers/promises"
+var promises_ = __webpack_require__(9397);
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/contents.js
+const contents_getStreamContents = async (stream, {init, convertChunk, getSize, truncateChunk, addChunk, getFinalChunk, finalize}, {maxBuffer = Number.POSITIVE_INFINITY} = {}) => {
+	if (!isAsyncIterable(stream)) {
+		throw new Error('The first argument must be a Readable, a ReadableStream, or an async iterable.');
+	}
+
+	const state = init();
+	state.length = 0;
+
+	try {
+		for await (const chunk of stream) {
+			const chunkType = getChunkType(chunk);
+			const convertedChunk = convertChunk[chunkType](chunk, state);
+			appendChunk({convertedChunk, state, getSize, truncateChunk, addChunk, maxBuffer});
+		}
+
+		appendFinalChunk({state, convertChunk, getSize, truncateChunk, addChunk, getFinalChunk, maxBuffer});
+		return finalize(state);
+	} catch (error) {
+		error.bufferedData = finalize(state);
+		throw error;
+	}
+};
+
+const appendFinalChunk = ({state, getSize, truncateChunk, addChunk, getFinalChunk, maxBuffer}) => {
+	const convertedChunk = getFinalChunk(state);
+	if (convertedChunk !== undefined) {
+		appendChunk({convertedChunk, state, getSize, truncateChunk, addChunk, maxBuffer});
+	}
+};
+
+const appendChunk = ({convertedChunk, state, getSize, truncateChunk, addChunk, maxBuffer}) => {
+	const chunkSize = getSize(convertedChunk);
+	const newLength = state.length + chunkSize;
+
+	if (newLength <= maxBuffer) {
+		addNewChunk(convertedChunk, state, addChunk, newLength);
+		return;
+	}
+
+	const truncatedChunk = truncateChunk(convertedChunk, maxBuffer - state.length);
+
+	if (truncatedChunk !== undefined) {
+		addNewChunk(truncatedChunk, state, addChunk, maxBuffer);
+	}
+
+	throw new MaxBufferError();
+};
+
+const addNewChunk = (convertedChunk, state, addChunk, newLength) => {
+	state.contents = addChunk(convertedChunk, state, newLength);
+	state.length = newLength;
+};
+
+const isAsyncIterable = stream => typeof stream === 'object' && stream !== null && typeof stream[Symbol.asyncIterator] === 'function';
+
+const getChunkType = chunk => {
+	const typeOfChunk = typeof chunk;
+
+	if (typeOfChunk === 'string') {
+		return 'string';
+	}
+
+	if (typeOfChunk !== 'object' || chunk === null) {
+		return 'others';
+	}
+
+	// eslint-disable-next-line n/prefer-global/buffer
+	if (globalThis.Buffer?.isBuffer(chunk)) {
+		return 'buffer';
+	}
+
+	const prototypeName = objectToString.call(chunk);
+
+	if (prototypeName === '[object ArrayBuffer]') {
+		return 'arrayBuffer';
+	}
+
+	if (prototypeName === '[object DataView]') {
+		return 'dataView';
+	}
+
+	if (
+		Number.isInteger(chunk.byteLength)
+		&& Number.isInteger(chunk.byteOffset)
+		&& objectToString.call(chunk.buffer) === '[object ArrayBuffer]'
+	) {
+		return 'typedArray';
+	}
+
+	return 'others';
+};
+
+const {toString: objectToString} = Object.prototype;
+
+class MaxBufferError extends Error {
+	name = 'MaxBufferError';
+
+	constructor() {
+		super('maxBuffer exceeded');
+	}
+}
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/utils.js
+const identity = value => value;
+
+const noop = () => undefined;
+
+const getContentsProp = ({contents}) => contents;
+
+const throwObjectStream = chunk => {
+	throw new Error(`Streams in object mode are not supported: ${String(chunk)}`);
+};
+
+const getLengthProp = convertedChunk => convertedChunk.length;
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/array.js
+
+
+
+async function getStreamAsArray(stream, options) {
+	return getStreamContents(stream, arrayMethods, options);
+}
+
+const initArray = () => ({contents: []});
+
+const increment = () => 1;
+
+const addArrayChunk = (convertedChunk, {contents}) => {
+	contents.push(convertedChunk);
+	return contents;
+};
+
+const arrayMethods = {
+	init: initArray,
+	convertChunk: {
+		string: identity,
+		buffer: identity,
+		arrayBuffer: identity,
+		dataView: identity,
+		typedArray: identity,
+		others: identity,
+	},
+	getSize: increment,
+	truncateChunk: noop,
+	addChunk: addArrayChunk,
+	getFinalChunk: noop,
+	finalize: getContentsProp,
+};
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/array-buffer.js
+
+
+
+async function getStreamAsArrayBuffer(stream, options) {
+	return contents_getStreamContents(stream, arrayBufferMethods, options);
+}
+
+const initArrayBuffer = () => ({contents: new ArrayBuffer(0)});
+
+const useTextEncoder = chunk => textEncoder.encode(chunk);
+const textEncoder = new TextEncoder();
+
+const useUint8Array = chunk => new Uint8Array(chunk);
+
+const useUint8ArrayWithOffset = chunk => new Uint8Array(chunk.buffer, chunk.byteOffset, chunk.byteLength);
+
+const truncateArrayBufferChunk = (convertedChunk, chunkSize) => convertedChunk.slice(0, chunkSize);
+
+// `contents` is an increasingly growing `Uint8Array`.
+const addArrayBufferChunk = (convertedChunk, {contents, length: previousLength}, length) => {
+	const newContents = hasArrayBufferResize() ? resizeArrayBuffer(contents, length) : resizeArrayBufferSlow(contents, length);
+	new Uint8Array(newContents).set(convertedChunk, previousLength);
+	return newContents;
+};
+
+// Without `ArrayBuffer.resize()`, `contents` size is always a power of 2.
+// This means its last bytes are zeroes (not stream data), which need to be
+// trimmed at the end with `ArrayBuffer.slice()`.
+const resizeArrayBufferSlow = (contents, length) => {
+	if (length <= contents.byteLength) {
+		return contents;
+	}
+
+	const arrayBuffer = new ArrayBuffer(getNewContentsLength(length));
+	new Uint8Array(arrayBuffer).set(new Uint8Array(contents), 0);
+	return arrayBuffer;
+};
+
+// With `ArrayBuffer.resize()`, `contents` size matches exactly the size of
+// the stream data. It does not include extraneous zeroes to trim at the end.
+// The underlying `ArrayBuffer` does allocate a number of bytes that is a power
+// of 2, but those bytes are only visible after calling `ArrayBuffer.resize()`.
+const resizeArrayBuffer = (contents, length) => {
+	if (length <= contents.maxByteLength) {
+		contents.resize(length);
+		return contents;
+	}
+
+	const arrayBuffer = new ArrayBuffer(length, {maxByteLength: getNewContentsLength(length)});
+	new Uint8Array(arrayBuffer).set(new Uint8Array(contents), 0);
+	return arrayBuffer;
+};
+
+// Retrieve the closest `length` that is both >= and a power of 2
+const getNewContentsLength = length => SCALE_FACTOR ** Math.ceil(Math.log(length) / Math.log(SCALE_FACTOR));
+
+const SCALE_FACTOR = 2;
+
+const finalizeArrayBuffer = ({contents, length}) => hasArrayBufferResize() ? contents : contents.slice(0, length);
+
+// `ArrayBuffer.slice()` is slow. When `ArrayBuffer.resize()` is available
+// (Node >=20.0.0, Safari >=16.4 and Chrome), we can use it instead.
+// eslint-disable-next-line no-warning-comments
+// TODO: remove after dropping support for Node 20.
+// eslint-disable-next-line no-warning-comments
+// TODO: use `ArrayBuffer.transferToFixedLength()` instead once it is available
+const hasArrayBufferResize = () => 'resize' in ArrayBuffer.prototype;
+
+const arrayBufferMethods = {
+	init: initArrayBuffer,
+	convertChunk: {
+		string: useTextEncoder,
+		buffer: useUint8Array,
+		arrayBuffer: useUint8Array,
+		dataView: useUint8ArrayWithOffset,
+		typedArray: useUint8ArrayWithOffset,
+		others: throwObjectStream,
+	},
+	getSize: getLengthProp,
+	truncateChunk: truncateArrayBufferChunk,
+	addChunk: addArrayBufferChunk,
+	getFinalChunk: noop,
+	finalize: finalizeArrayBuffer,
+};
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/buffer.js
+
+
+async function getStreamAsBuffer(stream, options) {
+	if (!('Buffer' in globalThis)) {
+		throw new Error('getStreamAsBuffer() is only supported in Node.js');
+	}
+
+	try {
+		return arrayBufferToNodeBuffer(await getStreamAsArrayBuffer(stream, options));
+	} catch (error) {
+		if (error.bufferedData !== undefined) {
+			error.bufferedData = arrayBufferToNodeBuffer(error.bufferedData);
+		}
+
+		throw error;
+	}
+}
+
+// eslint-disable-next-line n/prefer-global/buffer
+const arrayBufferToNodeBuffer = arrayBuffer => globalThis.Buffer.from(arrayBuffer);
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/string.js
+
+
+
+async function getStreamAsString(stream, options) {
+	return contents_getStreamContents(stream, stringMethods, options);
+}
+
+const initString = () => ({contents: '', textDecoder: new TextDecoder()});
+
+const useTextDecoder = (chunk, {textDecoder}) => textDecoder.decode(chunk, {stream: true});
+
+const addStringChunk = (convertedChunk, {contents}) => contents + convertedChunk;
+
+const truncateStringChunk = (convertedChunk, chunkSize) => convertedChunk.slice(0, chunkSize);
+
+const getFinalStringChunk = ({textDecoder}) => {
+	const finalChunk = textDecoder.decode();
+	return finalChunk === '' ? undefined : finalChunk;
+};
+
+const stringMethods = {
+	init: initString,
+	convertChunk: {
+		string: identity,
+		buffer: useTextDecoder,
+		arrayBuffer: useTextDecoder,
+		dataView: useTextDecoder,
+		typedArray: useTextDecoder,
+		others: throwObjectStream,
+	},
+	getSize: getLengthProp,
+	truncateChunk: truncateStringChunk,
+	addChunk: addStringChunk,
+	getFinalChunk: getFinalStringChunk,
+	finalize: getContentsProp,
+};
+
+;// CONCATENATED MODULE: ./node_modules/.pnpm/get-stream@8.0.1/node_modules/get-stream/source/index.js
+
+
+
+
+
+
 // EXTERNAL MODULE: ./node_modules/.pnpm/merge-stream@2.0.0/node_modules/merge-stream/index.js
-var merge_stream = __webpack_require__(237);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/stream.js
+var merge_stream = __webpack_require__(3148);
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/stream.js
+
 
 
 
@@ -1761,6 +2403,9 @@ const getBufferedData = async (stream, streamPromise) => {
 		return;
 	}
 
+	// Wait for the `all` stream to receive the last chunk before destroying the stream
+	await (0,promises_.setTimeout)(0);
+
 	stream.destroy();
 
 	try {
@@ -1775,11 +2420,21 @@ const getStreamPromise = (stream, {encoding, buffer, maxBuffer}) => {
 		return;
 	}
 
-	if (encoding) {
-		return get_stream(stream, {encoding, maxBuffer});
+	// eslint-disable-next-line unicorn/text-encoding-identifier-case
+	if (encoding === 'utf8' || encoding === 'utf-8') {
+		return getStreamAsString(stream, {maxBuffer});
 	}
 
-	return get_stream.buffer(stream, {maxBuffer});
+	if (encoding === null || encoding === 'buffer') {
+		return getStreamAsBuffer(stream, {maxBuffer});
+	}
+
+	return applyEncoding(stream, maxBuffer, encoding);
+};
+
+const applyEncoding = async (stream, maxBuffer, encoding) => {
+	const buffer = await getStreamAsBuffer(stream, {maxBuffer});
+	return buffer.toString(encoding);
 };
 
 // Retrieve result of child process: exit code, signal, error, streams (stdout/stderr/all)
@@ -1800,7 +2455,7 @@ const getSpawnedResult = async ({stdout, stderr, all}, {encoding, buffer, maxBuf
 	}
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/promise.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/promise.js
 // eslint-disable-next-line unicorn/prefer-top-level-await
 const nativePromisePrototype = (async () => {})().constructor.prototype;
 
@@ -1838,7 +2493,7 @@ const getSpawnedPromise = spawned => new Promise((resolve, reject) => {
 	}
 });
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/command.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/command.js
 
 
 
@@ -1851,14 +2506,13 @@ const normalizeArgs = (file, args = []) => {
 };
 
 const NO_ESCAPE_REGEXP = /^[\w.-]+$/;
-const DOUBLE_QUOTES_REGEXP = /"/g;
 
 const escapeArg = arg => {
 	if (typeof arg !== 'string' || NO_ESCAPE_REGEXP.test(arg)) {
 		return arg;
 	}
 
-	return `"${arg.replace(DOUBLE_QUOTES_REGEXP, '\\"')}"`;
+	return `"${arg.replaceAll('"', '\\"')}"`;
 };
 
 const joinCommand = (file, args) => normalizeArgs(file, args).join(' ');
@@ -1872,7 +2526,7 @@ const parseCommand = command => {
 	const tokens = [];
 	for (const token of command.trim().split(SPACES_REGEXP)) {
 		// Allow spaces to be escaped by a backslash if not meant as a delimiter
-		const previousToken = tokens[tokens.length - 1];
+		const previousToken = tokens.at(-1);
 		if (previousToken && previousToken.endsWith('\\')) {
 			// Merge previous token with current one
 			tokens[tokens.length - 1] = `${previousToken.slice(0, -1)} ${token}`;
@@ -1921,7 +2575,7 @@ const concatTokens = (tokens, nextTokens, isNew) => isNew || tokens.length === 0
 	? [...tokens, ...nextTokens]
 	: [
 		...tokens.slice(0, -1),
-		`${tokens[tokens.length - 1]}${nextTokens[0]}`,
+		`${tokens.at(-1)}${nextTokens[0]}`,
 		...nextTokens.slice(1),
 	];
 
@@ -1962,7 +2616,7 @@ const parseTemplates = (templates, expressions) => {
 
 // EXTERNAL MODULE: external "node:util"
 var external_node_util_ = __webpack_require__(7261);
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/lib/verbose.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/lib/verbose.js
 
 
 
@@ -1983,7 +2637,7 @@ const logCommand = (escapedCommand, {verbose}) => {
 	external_node_process_.stderr.write(`[${getTimestamp()}] ${escapedCommand}\n`);
 };
 
-;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@7.1.1/node_modules/execa/index.js
+;// CONCATENATED MODULE: ./node_modules/.pnpm/execa@8.0.1/node_modules/execa/index.js
 
 
 

@@ -1,11 +1,11 @@
 import * as core from '@actions/core'
-import { GitHub, context } from '@actions/github'
+import { context, getOctokit } from '@actions/github'
 import { generateChangelog } from './changelog.js'
 
 async function run() {
   try {
     // Get authenticated GitHub client (Ocktokit): https://github.com/actions/toolkit/tree/master/packages/github#usage
-    const github = new GitHub(process.env.GITHUB_TOKEN)
+    const github = getOctokit(process.env.GITHUB_TOKEN)
 
     // Get owner and repo from context of payload that triggered the action
     const { owner, repo } = context.repo
@@ -18,7 +18,7 @@ async function run() {
     const releaseName =
       core.getInput('release_name', { required: false }) || tag
 
-    const releases = await github.repos.listReleases({
+    const releases = await github.rest.repos.listReleases({
       owner,
       repo,
       per_page: 1,
@@ -43,7 +43,7 @@ async function run() {
     // Create a release
     // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
     // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-create-release
-    await github.repos.createRelease({
+    await github.rest.repos.createRelease({
       owner,
       repo,
       tag_name: tag,
