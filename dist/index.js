@@ -40711,7 +40711,7 @@ try {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateChangelog = void 0;
 const changelogen_1 = __nccwpck_require__(7225);
-async function generateChangelog(cwd, from, newVersion) {
+async function generateChangelog(cwd, from, newVersion, ignoreContributors) {
     const config = await (0, changelogen_1.loadChangelogConfig)(cwd, {
         from,
         newVersion,
@@ -40721,6 +40721,13 @@ async function generateChangelog(cwd, from, newVersion) {
     // Parse commits as conventional commits
     const commits = (0, changelogen_1.parseCommits)(rawCommits, config).filter((c) => config.types[c.type] &&
         !(c.type === 'chore' && c.scope === 'deps' && !c.isBreaking));
+    if (ignoreContributors)
+        commits.forEach(c => {
+            delete c.author;
+        });
+    // Ignore release commit
+    if (commits[0]?.message.includes(newVersion.replace(/^v/, '')))
+        commits.shift();
     console.log('Parsed commits:', commits);
     // Generate markdown
     const markdown = await (0, changelogen_1.generateMarkDown)(commits, config);
@@ -40781,7 +40788,8 @@ async function run() {
         });
         const previousTag = releases.data[0].tag_name;
         console.log(`${previousTag} => ${tag}`);
-        let body = await (0, changelog_js_1.generateChangelog)(process.cwd(), previousTag, tag.replace(/^v/, ''));
+        const ignoreContributors = core.getInput('no_contributors', { required: false }) === 'true';
+        let body = await (0, changelog_js_1.generateChangelog)(process.cwd(), previousTag, tag.replace(/^v/, ''), ignoreContributors);
         let lines = body.split('\n');
         // Cleanup output
         const tagFilter = tag.replace('v', '');
@@ -40790,7 +40798,7 @@ async function run() {
         console.log('Changelog body:');
         console.log(body);
         const draft = core.getInput('draft', { required: false }) === 'true';
-        const prerelease = /\d-[a-z]/.test(tag);
+        const prerelease = /\d\.\d\.\d-/.test(tag);
         // Create a release
         // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release
         // Octokit Documentation: https://octokit.github.io/rest.js/#octokit-routes-repos-create-release

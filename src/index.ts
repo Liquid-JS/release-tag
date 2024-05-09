@@ -27,7 +27,8 @@ async function run() {
 
     console.log(`${previousTag} => ${tag}`)
 
-    let body = await generateChangelog(process.cwd(), previousTag, tag.replace(/^v/, ''))
+    const ignoreContributors = core.getInput('no_contributors', { required: false }) === 'true'
+    let body = await generateChangelog(process.cwd(), previousTag, tag.replace(/^v/, ''), ignoreContributors)
     
     let lines = body.split('\n')
     // Cleanup output
@@ -37,7 +38,7 @@ async function run() {
     console.log('Changelog body:')
     console.log(body)
     const draft = core.getInput('draft', { required: false }) === 'true'
-    const prerelease = /\d-[a-z]/.test(tag)
+    const prerelease = /\d\.\d\.\d-/.test(tag)
 
     // Create a release
     // API Documentation: https://developer.github.com/v3/repos/releases/#create-a-release

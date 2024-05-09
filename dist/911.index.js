@@ -2,6 +2,64 @@ exports.id = 911;
 exports.ids = [911];
 exports.modules = {
 
+/***/ 1737:
+/***/ ((module) => {
+
+"use strict";
+
+var argv = process.argv;
+
+var terminator = argv.indexOf('--');
+var hasFlag = function (flag) {
+	flag = '--' + flag;
+	var pos = argv.indexOf(flag);
+	return pos !== -1 && (terminator !== -1 ? pos < terminator : true);
+};
+
+module.exports = (function () {
+	if ('FORCE_COLOR' in process.env) {
+		return true;
+	}
+
+	if (hasFlag('no-color') ||
+		hasFlag('no-colors') ||
+		hasFlag('color=false')) {
+		return false;
+	}
+
+	if (hasFlag('color') ||
+		hasFlag('colors') ||
+		hasFlag('color=true') ||
+		hasFlag('color=always')) {
+		return true;
+	}
+
+	if (process.stdout && !process.stdout.isTTY) {
+		return false;
+	}
+
+	if (process.platform === 'win32') {
+		return true;
+	}
+
+	if ('COLORTERM' in process.env) {
+		return true;
+	}
+
+	if (process.env.TERM === 'dumb') {
+		return false;
+	}
+
+	if (/^screen|^xterm|^vt100|color|ansi|cygwin|linux/i.test(process.env.TERM)) {
+		return true;
+	}
+
+	return false;
+})();
+
+
+/***/ }),
+
 /***/ 1696:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
@@ -1020,7 +1078,7 @@ exports.colors = [6, 2, 3, 4, 5, 1];
 try {
 	// Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)
 	// eslint-disable-next-line import/no-extraneous-dependencies
-	const supportsColor = __webpack_require__(9605);
+	const supportsColor = __webpack_require__(1737);
 
 	if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
 		exports.colors = [
@@ -8773,14 +8831,6 @@ const getType = stat =>
   : 'Unsupported'
 
 module.exports = WriteEntry
-
-
-/***/ }),
-
-/***/ 9605:
-/***/ ((module) => {
-
-module.exports = eval("require")("supports-color");
 
 
 /***/ }),
