@@ -1,9 +1,9 @@
 "use strict";
-exports.id = 156;
-exports.ids = [156];
+exports.id = 35;
+exports.ids = [35];
 exports.modules = {
 
-/***/ 1156:
+/***/ 8035:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 // ESM COMPAT FLAG
@@ -11,12 +11,12 @@ __webpack_require__.r(__webpack_exports__);
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "parseJSONC": () => (/* reexport */ K),
-  "stringifyJSONC": () => (/* reexport */ x)
+  parseJSONC: () => (/* reexport */ K),
+  stringifyJSONC: () => (/* reexport */ x)
 });
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/confbox@0.1.7/node_modules/confbox/dist/shared/confbox.9388d834.mjs
-var confbox_9388d834 = __webpack_require__(7122);
+var confbox_9388d834 = __webpack_require__(3484);
 ;// CONCATENATED MODULE: ./node_modules/.pnpm/confbox@0.1.7/node_modules/confbox/dist/shared/confbox.bcd59e75.mjs
 function Y(n,l=!1){const g=n.length;let e=0,t="",T=0,f=16,O=0,p=0,A=0,B=0,s=0;function F(i,c){let u=0,b=0;for(;u<i||!c;){let m=n.charCodeAt(e);if(m>=48&&m<=57)b=b*16+m-48;else if(m>=65&&m<=70)b=b*16+m-65+10;else if(m>=97&&m<=102)b=b*16+m-97+10;else break;e++,u++}return u<i&&(b=-1),b}function j(i){e=i,t="",T=0,f=16,s=0}function w(){let i=e;if(n.charCodeAt(e)===48)e++;else for(e++;e<n.length&&N(n.charCodeAt(e));)e++;if(e<n.length&&n.charCodeAt(e)===46)if(e++,e<n.length&&N(n.charCodeAt(e)))for(e++;e<n.length&&N(n.charCodeAt(e));)e++;else return s=3,n.substring(i,e);let c=e;if(e<n.length&&(n.charCodeAt(e)===69||n.charCodeAt(e)===101))if(e++,(e<n.length&&n.charCodeAt(e)===43||n.charCodeAt(e)===45)&&e++,e<n.length&&N(n.charCodeAt(e))){for(e++;e<n.length&&N(n.charCodeAt(e));)e++;c=e}else s=3;return n.substring(i,c)}function L(){let i="",c=e;for(;;){if(e>=g){i+=n.substring(c,e),s=2;break}const u=n.charCodeAt(e);if(u===34){i+=n.substring(c,e),e++;break}if(u===92){if(i+=n.substring(c,e),e++,e>=g){s=2;break}switch(n.charCodeAt(e++)){case 34:i+='"';break;case 92:i+="\\";break;case 47:i+="/";break;case 98:i+="\b";break;case 102:i+="\f";break;case 110:i+=`
 `;break;case 114:i+="\r";break;case 116:i+="	";break;case 117:const m=F(4,!0);m>=0?i+=String.fromCharCode(m):s=4;break;default:s=5}c=e;continue}if(u>=0&&u<=31)if(_(u)){i+=n.substring(c,e),s=2;break}else s=6;e++}return i}function U(){if(t="",s=0,T=e,p=O,B=A,e>=g)return T=g,f=17;let i=n.charCodeAt(e);if(D(i)){do e++,t+=String.fromCharCode(i),i=n.charCodeAt(e);while(D(i));return f=15}if(_(i))return e++,t+=String.fromCharCode(i),i===13&&n.charCodeAt(e)===10&&(e++,t+=`
@@ -32,12 +32,12 @@ function Y(n,l=!1){const g=n.length;let e=0,t="",T=0,f=16,O=0,p=0,A=0,B=0,s=0;fu
 
 /***/ }),
 
-/***/ 7122:
+/***/ 3484:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "g": () => (/* binding */ C),
-/* harmony export */   "s": () => (/* binding */ N)
+/* harmony export */   g: () => (/* binding */ C),
+/* harmony export */   s: () => (/* binding */ N)
 /* harmony export */ });
 const b=/^(?:( )+|\t+)/,d="space",h="tab";function g(e,t){const n=new Map;let i=0,s,o;for(const c of e.split(/\n/g)){if(!c)continue;let f,a,l,p,r;const y=c.match(b);if(y===null)i=0,s="";else{if(f=y[0].length,a=y[1]?d:h,t&&a===d&&f===1)continue;a!==s&&(i=0),s=a,l=1,p=0;const u=f-i;if(i=f,u===0)l=0,p=1;else{const I=u>0?u:-u;o=T(a,I)}r=n.get(o),r=r===void 0?[1,0]:[r[0]+l,r[1]+p],n.set(o,r)}}return n}function T(e,t){return(e===d?"s":"t")+String(t)}function w(e){const n=e[0]==="s"?d:h,i=Number(e.slice(1));return{type:n,amount:i}}function E(e){let t,n=0,i=0;for(const[s,[o,c]]of e)(o>n||o===n&&c>i)&&(n=o,i=c,t=s);return t}function S(e,t){return(e===d?" ":"	").repeat(t)}function _(e){if(typeof e!="string")throw new TypeError("Expected a string");let t=g(e,!0);t.size===0&&(t=g(e,!1));const n=E(t);let i,s=0,o="";return n!==void 0&&({type:i,amount:s}=w(n),o=S(i,s)),{amount:s,type:i,indent:o}}const m=Symbol.for("__confbox_fmt__"),k=/^(\s+)/,v=/(\s+)$/;function x(e,t={}){const n=t.indent===void 0&&t.preserveIndentation!==!1&&e.slice(0,t?.sampleSize||1024),i=t.preserveWhitespace===!1?void 0:{start:k.exec(e)?.[0]||"",end:v.exec(e)?.[0]||""};return{sample:n,whiteSpace:i}}function N(e,t,n){!t||typeof t!="object"||Object.defineProperty(t,m,{enumerable:!1,configurable:!0,writable:!0,value:x(e,n)})}function C(e,t){if(!e||typeof e!="object"||!(m in e))return{indent:t?.indent,whitespace:{start:"",end:""}};const n=e[m];return{indent:t?.indent||_(n.sample||"").indent,whitespace:n.whiteSpace||{start:"",end:""}}}
 

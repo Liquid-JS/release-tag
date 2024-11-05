@@ -9,13 +9,14 @@
     "build": "rm -rf ./dist && ncc build src/index.ts"
   },
   "dependencies": {
-    "@actions/core": "^1.10.1",
+    "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
-    "changelogen": "^0.5.5"
+    "changelogen": "^0.5.7"
   },
   "devDependencies": {
-    "@types/node": "^20.12.11",
-    "@vercel/ncc": "^0.38.1",
-    "typescript": "^5.4.5"
-  }
+    "@types/node": "^22.9.0",
+    "@vercel/ncc": "^0.38.2",
+    "typescript": "^5.6.3"
+  },
+  "packageManager": "pnpm@9.12.3+sha512.cce0f9de9c5a7c95bef944169cc5dfe8741abfb145078c0d508b868056848a87c81e626246cb60967cbd7fd29a6c062ef73ff840d96b3c86c40ac92cf4a813ee"
 }

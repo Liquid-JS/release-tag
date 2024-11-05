@@ -1,29 +1,29 @@
 "use strict";
-exports.id = 733;
-exports.ids = [733];
+exports.id = 786;
+exports.ids = [786];
 exports.modules = {
 
-/***/ 7122:
+/***/ 3484:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "g": () => (/* binding */ C),
-/* harmony export */   "s": () => (/* binding */ N)
+/* harmony export */   g: () => (/* binding */ C),
+/* harmony export */   s: () => (/* binding */ N)
 /* harmony export */ });
 const b=/^(?:( )+|\t+)/,d="space",h="tab";function g(e,t){const n=new Map;let i=0,s,o;for(const c of e.split(/\n/g)){if(!c)continue;let f,a,l,p,r;const y=c.match(b);if(y===null)i=0,s="";else{if(f=y[0].length,a=y[1]?d:h,t&&a===d&&f===1)continue;a!==s&&(i=0),s=a,l=1,p=0;const u=f-i;if(i=f,u===0)l=0,p=1;else{const I=u>0?u:-u;o=T(a,I)}r=n.get(o),r=r===void 0?[1,0]:[r[0]+l,r[1]+p],n.set(o,r)}}return n}function T(e,t){return(e===d?"s":"t")+String(t)}function w(e){const n=e[0]==="s"?d:h,i=Number(e.slice(1));return{type:n,amount:i}}function E(e){let t,n=0,i=0;for(const[s,[o,c]]of e)(o>n||o===n&&c>i)&&(n=o,i=c,t=s);return t}function S(e,t){return(e===d?" ":"	").repeat(t)}function _(e){if(typeof e!="string")throw new TypeError("Expected a string");let t=g(e,!0);t.size===0&&(t=g(e,!1));const n=E(t);let i,s=0,o="";return n!==void 0&&({type:i,amount:s}=w(n),o=S(i,s)),{amount:s,type:i,indent:o}}const m=Symbol.for("__confbox_fmt__"),k=/^(\s+)/,v=/(\s+)$/;function x(e,t={}){const n=t.indent===void 0&&t.preserveIndentation!==!1&&e.slice(0,t?.sampleSize||1024),i=t.preserveWhitespace===!1?void 0:{start:k.exec(e)?.[0]||"",end:v.exec(e)?.[0]||""};return{sample:n,whiteSpace:i}}function N(e,t,n){!t||typeof t!="object"||Object.defineProperty(t,m,{enumerable:!1,configurable:!0,writable:!0,value:x(e,n)})}function C(e,t){if(!e||typeof e!="object"||!(m in e))return{indent:t?.indent,whitespace:{start:"",end:""}};const n=e[m];return{indent:t?.indent||_(n.sample||"").indent,whitespace:n.whiteSpace||{start:"",end:""}}}
 
 
 /***/ }),
 
-/***/ 733:
+/***/ 6786:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "parseTOML": () => (/* binding */ ae),
-/* harmony export */   "stringifyTOML": () => (/* binding */ ue)
+/* harmony export */   parseTOML: () => (/* binding */ ae),
+/* harmony export */   stringifyTOML: () => (/* binding */ ue)
 /* harmony export */ });
-/* harmony import */ var _shared_confbox_9388d834_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7122);
+/* harmony import */ var _shared_confbox_9388d834_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3484);
 var F=Object.defineProperty;var V=(e,n,t)=>n in e?F(e,n,{enumerable:!0,configurable:!0,writable:!0,value:t}):e[n]=t;var O=(e,n,t)=>(V(e,typeof n!="symbol"?n+"":n,t),t),L=(e,n,t)=>{if(!n.has(e))throw TypeError("Cannot "+t)};var d=(e,n,t)=>(L(e,n,"read from private field"),t?t.call(e):n.get(e)),T=(e,n,t)=>{if(n.has(e))throw TypeError("Cannot add the same private member more than once");n instanceof WeakSet?n.add(e):n.set(e,t)},w=(e,n,t,i)=>(L(e,n,"write to private field"),i?i.call(e,t):n.set(e,t),t);var h,m,s;/*!
  * Copyright (c) Squirrel Chat et al., All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause

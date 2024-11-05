@@ -1,8 +1,8 @@
-exports.id = 633;
-exports.ids = [633];
+exports.id = 310;
+exports.ids = [310];
 exports.modules = {
 
-/***/ 1035:
+/***/ 350:
 /***/ ((module, exports, __webpack_require__) => {
 
 "use strict";
@@ -10,8 +10,8 @@ exports.modules = {
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 
-const picomatch = __webpack_require__(4317);
-const normalizePath = __webpack_require__(7674);
+const picomatch = __webpack_require__(2925);
+const normalizePath = __webpack_require__(1712);
 
 /**
  * @typedef {(testString: string) => boolean} AnymatchFn
@@ -114,24 +114,24 @@ module.exports = anymatch;
 
 /***/ }),
 
-/***/ 7408:
+/***/ 448:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__(8508);
+module.exports = __webpack_require__(7237);
 
 
 /***/ }),
 
-/***/ 32:
+/***/ 4894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const stringify = __webpack_require__(1738);
-const compile = __webpack_require__(2445);
-const expand = __webpack_require__(1577);
-const parse = __webpack_require__(7702);
+const stringify = __webpack_require__(9263);
+const compile = __webpack_require__(7319);
+const expand = __webpack_require__(6152);
+const parse = __webpack_require__(3665);
 
 /**
  * Expand the given pattern or create a regex-compatible string.
@@ -300,14 +300,14 @@ module.exports = braces;
 
 /***/ }),
 
-/***/ 2445:
+/***/ 7319:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fill = __webpack_require__(4059);
-const utils = __webpack_require__(3230);
+const fill = __webpack_require__(7911);
+const utils = __webpack_require__(1891);
 
 const compile = (ast, options = {}) => {
   let walk = (node, parent = {}) => {
@@ -365,7 +365,7 @@ module.exports = compile;
 
 /***/ }),
 
-/***/ 443:
+/***/ 5379:
 /***/ ((module) => {
 
 "use strict";
@@ -430,15 +430,15 @@ module.exports = {
 
 /***/ }),
 
-/***/ 1577:
+/***/ 6152:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fill = __webpack_require__(4059);
-const stringify = __webpack_require__(1738);
-const utils = __webpack_require__(3230);
+const fill = __webpack_require__(7911);
+const stringify = __webpack_require__(9263);
+const utils = __webpack_require__(1891);
 
 const append = (queue = '', stash = '', enclose = false) => {
   let result = [];
@@ -551,13 +551,13 @@ module.exports = expand;
 
 /***/ }),
 
-/***/ 7702:
+/***/ 3665:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const stringify = __webpack_require__(1738);
+const stringify = __webpack_require__(9263);
 
 /**
  * Constants
@@ -579,7 +579,7 @@ const {
   CHAR_SINGLE_QUOTE, /* ' */
   CHAR_NO_BREAK_SPACE,
   CHAR_ZERO_WIDTH_NOBREAK_SPACE
-} = __webpack_require__(443);
+} = __webpack_require__(5379);
 
 /**
  * parse
@@ -892,13 +892,13 @@ module.exports = parse;
 
 /***/ }),
 
-/***/ 1738:
+/***/ 9263:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const utils = __webpack_require__(3230);
+const utils = __webpack_require__(1891);
 
 module.exports = (ast, options = {}) => {
   let stringify = (node, parent = {}) => {
@@ -932,7 +932,7 @@ module.exports = (ast, options = {}) => {
 
 /***/ }),
 
-/***/ 3230:
+/***/ 1891:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -1052,25 +1052,25 @@ exports.flatten = (...args) => {
 
 /***/ }),
 
-/***/ 5633:
+/***/ 2310:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-const { EventEmitter } = __webpack_require__(2361);
-const fs = __webpack_require__(7147);
-const sysPath = __webpack_require__(1017);
-const { promisify } = __webpack_require__(3837);
-const readdirp = __webpack_require__(6176);
-const anymatch = (__webpack_require__(1035)["default"]);
-const globParent = __webpack_require__(862);
-const isGlob = __webpack_require__(7429);
-const braces = __webpack_require__(32);
-const normalizePath = __webpack_require__(7674);
+const { EventEmitter } = __webpack_require__(4434);
+const fs = __webpack_require__(9896);
+const sysPath = __webpack_require__(6928);
+const { promisify } = __webpack_require__(9023);
+const readdirp = __webpack_require__(4438);
+const anymatch = (__webpack_require__(350)["default"]);
+const globParent = __webpack_require__(2849);
+const isGlob = __webpack_require__(1404);
+const braces = __webpack_require__(4894);
+const normalizePath = __webpack_require__(1712);
 
-const NodeFsHandler = __webpack_require__(4767);
-const FsEventsHandler = __webpack_require__(4325);
+const NodeFsHandler = __webpack_require__(4902);
+const FsEventsHandler = __webpack_require__(579);
 const {
   EV_ALL,
   EV_READY,
@@ -1108,7 +1108,7 @@ const {
   isWindows,
   isMacos,
   isIBMi
-} = __webpack_require__(7563);
+} = __webpack_require__(8027);
 
 const stat = promisify(fs.stat);
 const readdir = promisify(fs.readdir);
@@ -2033,15 +2033,15 @@ exports.watch = watch;
 
 /***/ }),
 
-/***/ 7563:
+/***/ 8027:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-const {sep} = __webpack_require__(1017);
+const {sep} = __webpack_require__(6928);
 const {platform} = process;
-const os = __webpack_require__(2037);
+const os = __webpack_require__(857);
 
 exports.EV_ALL = 'all';
 exports.EV_READY = 'ready';
@@ -2107,19 +2107,19 @@ exports.isIBMi = os.type() === 'OS400';
 
 /***/ }),
 
-/***/ 4325:
+/***/ 579:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(7147);
-const sysPath = __webpack_require__(1017);
-const { promisify } = __webpack_require__(3837);
+const fs = __webpack_require__(9896);
+const sysPath = __webpack_require__(6928);
+const { promisify } = __webpack_require__(9023);
 
 let fsevents;
 try {
-  fsevents = __webpack_require__(8719);
+  fsevents = __webpack_require__(7806);
 } catch (error) {
   if (process.env.CHOKIDAR_PRINT_FSEVENTS_REQUIRE_ERROR) console.error(error);
 }
@@ -2161,7 +2161,7 @@ const {
   FUNCTION_TYPE,
   EMPTY_FN,
   IDENTITY_FN
-} = __webpack_require__(7563);
+} = __webpack_require__(8027);
 
 const Depth = (value) => isNaN(value) ? {} : {depth: value};
 
@@ -2641,16 +2641,16 @@ module.exports.canUse = canUse;
 
 /***/ }),
 
-/***/ 4767:
+/***/ 4902:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(7147);
-const sysPath = __webpack_require__(1017);
-const { promisify } = __webpack_require__(3837);
-const isBinaryPath = __webpack_require__(4765);
+const fs = __webpack_require__(9896);
+const sysPath = __webpack_require__(6928);
+const { promisify } = __webpack_require__(9023);
+const isBinaryPath = __webpack_require__(4664);
 const {
   isWindows,
   isLinux,
@@ -2668,7 +2668,7 @@ const {
   STR_END,
   BRACE_START,
   STAR
-} = __webpack_require__(7563);
+} = __webpack_require__(8027);
 
 const THROTTLE_MODE_WATCH = 'watch';
 
@@ -3303,7 +3303,7 @@ module.exports = NodeFsHandler;
 
 /***/ }),
 
-/***/ 4059:
+/***/ 7911:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -3316,8 +3316,8 @@ module.exports = NodeFsHandler;
 
 
 
-const util = __webpack_require__(3837);
-const toRegexRange = __webpack_require__(7513);
+const util = __webpack_require__(9023);
+const toRegexRange = __webpack_require__(5249);
 
 const isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
 
@@ -3560,15 +3560,15 @@ module.exports = fill;
 
 /***/ }),
 
-/***/ 862:
+/***/ 2849:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var isGlob = __webpack_require__(7429);
-var pathPosixDirname = (__webpack_require__(1017).posix.dirname);
-var isWin32 = (__webpack_require__(2037).platform)() === 'win32';
+var isGlob = __webpack_require__(1404);
+var pathPosixDirname = (__webpack_require__(6928).posix).dirname;
+var isWin32 = (__webpack_require__(857).platform)() === 'win32';
 
 var slash = '/';
 var backslash = /\\/g;
@@ -3610,13 +3610,13 @@ module.exports = function globParent(str, opts) {
 
 /***/ }),
 
-/***/ 4765:
+/***/ 4664:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
-const path = __webpack_require__(1017);
-const binaryExtensions = __webpack_require__(7408);
+const path = __webpack_require__(6928);
+const binaryExtensions = __webpack_require__(448);
 
 const extensions = new Set(binaryExtensions);
 
@@ -3625,7 +3625,7 @@ module.exports = filePath => extensions.has(path.extname(filePath).slice(1).toLo
 
 /***/ }),
 
-/***/ 5327:
+/***/ 4727:
 /***/ ((module) => {
 
 /*!
@@ -3652,7 +3652,7 @@ module.exports = function isExtglob(str) {
 
 /***/ }),
 
-/***/ 7429:
+/***/ 1404:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 /*!
@@ -3662,7 +3662,7 @@ module.exports = function isExtglob(str) {
  * Released under the MIT License.
  */
 
-var isExtglob = __webpack_require__(5327);
+var isExtglob = __webpack_require__(4727);
 var chars = { '{': '}', '(': ')', '[': ']'};
 var strictCheck = function(str) {
   if (str[0] === '!') {
@@ -3809,7 +3809,7 @@ module.exports = function isGlob(str, options) {
 
 /***/ }),
 
-/***/ 7378:
+/***/ 3214:
 /***/ ((module) => {
 
 "use strict";
@@ -3835,7 +3835,7 @@ module.exports = function(num) {
 
 /***/ }),
 
-/***/ 7674:
+/***/ 1712:
 /***/ ((module) => {
 
 /*!
@@ -3877,24 +3877,24 @@ module.exports = function(path, stripTrailing) {
 
 /***/ }),
 
-/***/ 4317:
+/***/ 2925:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-module.exports = __webpack_require__(4181);
+module.exports = __webpack_require__(4059);
 
 
 /***/ }),
 
-/***/ 7682:
+/***/ 5772:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(1017);
+const path = __webpack_require__(6928);
 const WIN_SLASH = '\\\\/';
 const WIN_NO_SLASH = `[^${WIN_SLASH}]`;
 
@@ -4075,14 +4075,14 @@ module.exports = {
 
 /***/ }),
 
-/***/ 5018:
+/***/ 7546:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const constants = __webpack_require__(7682);
-const utils = __webpack_require__(6807);
+const constants = __webpack_require__(5772);
+const utils = __webpack_require__(5296);
 
 /**
  * Constants
@@ -5174,17 +5174,17 @@ module.exports = parse;
 
 /***/ }),
 
-/***/ 4181:
+/***/ 4059:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(1017);
-const scan = __webpack_require__(369);
-const parse = __webpack_require__(5018);
-const utils = __webpack_require__(6807);
-const constants = __webpack_require__(7682);
+const path = __webpack_require__(6928);
+const scan = __webpack_require__(2792);
+const parse = __webpack_require__(7546);
+const utils = __webpack_require__(5296);
+const constants = __webpack_require__(5772);
 const isObject = val => val && typeof val === 'object' && !Array.isArray(val);
 
 /**
@@ -5524,13 +5524,13 @@ module.exports = picomatch;
 
 /***/ }),
 
-/***/ 369:
+/***/ 2792:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const utils = __webpack_require__(6807);
+const utils = __webpack_require__(5296);
 const {
   CHAR_ASTERISK,             /* * */
   CHAR_AT,                   /* @ */
@@ -5547,7 +5547,7 @@ const {
   CHAR_RIGHT_CURLY_BRACE,    /* } */
   CHAR_RIGHT_PARENTHESES,    /* ) */
   CHAR_RIGHT_SQUARE_BRACKET  /* ] */
-} = __webpack_require__(7682);
+} = __webpack_require__(5772);
 
 const isPathSeparator = code => {
   return code === CHAR_FORWARD_SLASH || code === CHAR_BACKWARD_SLASH;
@@ -5923,20 +5923,20 @@ module.exports = scan;
 
 /***/ }),
 
-/***/ 6807:
+/***/ 5296:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-const path = __webpack_require__(1017);
+const path = __webpack_require__(6928);
 const win32 = process.platform === 'win32';
 const {
   REGEX_BACKSLASH,
   REGEX_REMOVE_BACKSLASH,
   REGEX_SPECIAL_CHARS,
   REGEX_SPECIAL_CHARS_GLOBAL
-} = __webpack_require__(7682);
+} = __webpack_require__(5772);
 
 exports.isObject = val => val !== null && typeof val === 'object' && !Array.isArray(val);
 exports.hasRegexChars = str => REGEX_SPECIAL_CHARS.test(str);
@@ -5995,17 +5995,17 @@ exports.wrapOutput = (input, state = {}, options = {}) => {
 
 /***/ }),
 
-/***/ 6176:
+/***/ 4438:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-const fs = __webpack_require__(7147);
-const { Readable } = __webpack_require__(2781);
-const sysPath = __webpack_require__(1017);
-const { promisify } = __webpack_require__(3837);
-const picomatch = __webpack_require__(4317);
+const fs = __webpack_require__(9896);
+const { Readable } = __webpack_require__(2203);
+const sysPath = __webpack_require__(6928);
+const { promisify } = __webpack_require__(9023);
+const picomatch = __webpack_require__(2925);
 
 const readdir = promisify(fs.readdir);
 const stat = promisify(fs.stat);
@@ -6290,7 +6290,7 @@ module.exports = readdirp;
 
 /***/ }),
 
-/***/ 7513:
+/***/ 5249:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -6303,7 +6303,7 @@ module.exports = readdirp;
 
 
 
-const isNumber = __webpack_require__(7378);
+const isNumber = __webpack_require__(3214);
 
 const toRegexRange = (min, max, options) => {
   if (isNumber(min) === false) {
@@ -6586,7 +6586,7 @@ module.exports = toRegexRange;
 
 /***/ }),
 
-/***/ 8719:
+/***/ 7806:
 /***/ ((module) => {
 
 module.exports = eval("require")("fsevents");
@@ -6594,11 +6594,11 @@ module.exports = eval("require")("fsevents");
 
 /***/ }),
 
-/***/ 8508:
+/***/ 7237:
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('["3dm","3ds","3g2","3gp","7z","a","aac","adp","afdesign","afphoto","afpub","ai","aif","aiff","alz","ape","apk","appimage","ar","arj","asf","au","avi","bak","baml","bh","bin","bk","bmp","btif","bz2","bzip2","cab","caf","cgm","class","cmx","cpio","cr2","cur","dat","dcm","deb","dex","djvu","dll","dmg","dng","doc","docm","docx","dot","dotm","dra","DS_Store","dsk","dts","dtshd","dvb","dwg","dxf","ecelp4800","ecelp7470","ecelp9600","egg","eol","eot","epub","exe","f4v","fbs","fh","fla","flac","flatpak","fli","flv","fpx","fst","fvt","g3","gh","gif","graffle","gz","gzip","h261","h263","h264","icns","ico","ief","img","ipa","iso","jar","jpeg","jpg","jpgv","jpm","jxr","key","ktx","lha","lib","lvp","lz","lzh","lzma","lzo","m3u","m4a","m4v","mar","mdi","mht","mid","midi","mj2","mka","mkv","mmr","mng","mobi","mov","movie","mp3","mp4","mp4a","mpeg","mpg","mpga","mxu","nef","npx","numbers","nupkg","o","odp","ods","odt","oga","ogg","ogv","otf","ott","pages","pbm","pcx","pdb","pdf","pea","pgm","pic","png","pnm","pot","potm","potx","ppa","ppam","ppm","pps","ppsm","ppsx","ppt","pptm","pptx","psd","pya","pyc","pyo","pyv","qt","rar","ras","raw","resources","rgb","rip","rlc","rmf","rmvb","rpm","rtf","rz","s3m","s7z","scpt","sgi","shar","snap","sil","sketch","slk","smv","snk","so","stl","suo","sub","swf","tar","tbz","tbz2","tga","tgz","thmx","tif","tiff","tlz","ttc","ttf","txz","udf","uvh","uvi","uvm","uvp","uvs","uvu","viv","vob","war","wav","wax","wbmp","wdp","weba","webm","webp","whl","wim","wm","wma","wmv","wmx","woff","woff2","wrm","wvx","xbm","xif","xla","xlam","xls","xlsb","xlsm","xlsx","xlt","xltm","xltx","xm","xmind","xpi","xpm","xwd","xz","z","zip","zipx"]');
+module.exports = /*#__PURE__*/JSON.parse('["3dm","3ds","3g2","3gp","7z","a","aac","adp","afdesign","afphoto","afpub","ai","aif","aiff","alz","ape","apk","appimage","ar","arj","asf","au","avi","bak","baml","bh","bin","bk","bmp","btif","bz2","bzip2","cab","caf","cgm","class","cmx","cpio","cr2","cur","dat","dcm","deb","dex","djvu","dll","dmg","dng","doc","docm","docx","dot","dotm","dra","DS_Store","dsk","dts","dtshd","dvb","dwg","dxf","ecelp4800","ecelp7470","ecelp9600","egg","eol","eot","epub","exe","f4v","fbs","fh","fla","flac","flatpak","fli","flv","fpx","fst","fvt","g3","gh","gif","graffle","gz","gzip","h261","h263","h264","icns","ico","ief","img","ipa","iso","jar","jpeg","jpg","jpgv","jpm","jxr","key","ktx","lha","lib","lvp","lz","lzh","lzma","lzo","m3u","m4a","m4v","mar","mdi","mht","mid","midi","mj2","mka","mkv","mmr","mng","mobi","mov","movie","mp3","mp4","mp4a","mpeg","mpg","mpga","mxu","nef","npx","numbers","nupkg","o","odp","ods","odt","oga","ogg","ogv","otf","ott","pages","pbm","pcx","pdb","pdf","pea","pgm","pic","png","pnm","pot","potm","potx","ppa","ppam","ppm","pps","ppsm","ppsx","ppt","pptm","pptx","psd","pya","pyc","pyo","pyv","qt","rar","ras","raw","resources","rgb","rip","rlc","rmf","rmvb","rpm","rtf","rz","s3m","s7z","scpt","sgi","shar","snap","sil","sketch","slk","smv","snk","so","stl","suo","sub","swf","tar","tbz","tbz2","tga","tgz","thmx","tif","tiff","tlz","ttc","ttf","txz","udf","uvh","uvi","uvm","uvp","uvs","uvu","viv","vob","war","wav","wax","wbmp","wdp","weba","webm","webp","whl","wim","wm","wma","wmv","wmx","woff","woff2","wrm","wvx","xbm","xif","xla","xlam","xls","xlsb","xlsm","xlsx","xlt","xltm","xltx","xm","xmind","xpi","xpm","xwd","xz","z","zip","zipx"]');
 
 /***/ })
 

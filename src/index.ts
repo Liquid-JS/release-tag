@@ -5,7 +5,7 @@ import { generateChangelog } from './changelog.js'
 async function run() {
   try {
     // Get authenticated GitHub client (Ocktokit): https://github.com/actions/toolkit/tree/master/packages/github#usage
-    const github = getOctokit(process.env.GITHUB_TOKEN)
+    const github = getOctokit(process.env.GITHUB_TOKEN!)
 
     // Get owner and repo from context of payload that triggered the action
     const { owner, repo } = context.repo
@@ -23,13 +23,13 @@ async function run() {
       repo,
       per_page: 1,
     })
-    const previousTag = releases.data[0].tag_name
+    const previousTag = releases.data[0]?.tag_name as string | undefined
 
     console.log(`${previousTag} => ${tag}`)
 
     const ignoreContributors = core.getInput('no_contributors', { required: false }) === 'true'
     let body = await generateChangelog(process.cwd(), previousTag, tag.replace(/^v/, ''), ignoreContributors)
-    
+
     let lines = body.split('\n')
     // Cleanup output
     const tagFilter = tag.replace('v', '')
@@ -52,7 +52,7 @@ async function run() {
       draft,
       prerelease,
     })
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message)
   }
 }

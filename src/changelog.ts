@@ -5,7 +5,7 @@ import {
   loadChangelogConfig,
 } from 'changelogen'
 
-export async function generateChangelog(cwd: string, from: string, newVersion: string, ignoreContributors: boolean) {
+export async function generateChangelog(cwd: string, from: string | undefined, newVersion: string, ignoreContributors: boolean) {
   const config = await loadChangelogConfig(cwd, {
     from,
     newVersion,
@@ -24,11 +24,12 @@ export async function generateChangelog(cwd: string, from: string, newVersion: s
 
   if (ignoreContributors)
     commits.forEach(c => {
+      //@ts-ignore
       delete c.author
     })
 
   // Ignore release commit
-  if(commits[0]?.message.includes(newVersion.replace(/^v/, '')))
+  if (commits[0]?.message.includes(newVersion.replace(/^v/, '')))
     commits.shift()
 
   console.log('Parsed commits:', commits)
