@@ -1,11 +1,13 @@
 # release-tag
 
+[![GitHub license](https://img.shields.io/github/license/Liquid-JS/release-tag.svg)](https://github.com/Liquid-JS/release-tag/blob/master/LICENSE)
+
 This is a fork of [actions/create-release](https://github.com/actions/create-release) with the following changes:
 
 - Automatically determine whether a tag is a pre-release by checking for presence of `-` followed by a letter in the tag name.
 - Use [changelogen](https://github.com/unjs/changelogen) to generate the changelog as release body.
 
-Usage:
+## Usage
 
 ```yaml
 name: Create release

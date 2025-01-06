@@ -1,11 +1,27 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
-    "esModuleInterop": true,
-    "strict": true
+    "strictPropertyInitialization": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "importHelpers": false,
+    "outDir": "./lib/",
+    "sourceMap": true,
+    "module": "nodenext",
+    "target": "es2020",
+    "allowJs": true,
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["./src/**/*"],
+  "exclude": ["**/*.test.js", "**/*.test.ts"]
 }
