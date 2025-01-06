@@ -1,4 +1,4 @@
-name: "Release Tag"
+name: "Liquid-JS/release-tag"
 description: "Create a release on tag push"
 inputs:
   tag_name:
@@ -16,8 +16,8 @@ inputs:
     required: false
     default: false
 runs:
-  using: "node16"
-  main: "dist/index.js"
+  using: "node20"
+  main: "lib/index.js"
 branding:
   icon: "tag"
   color: "gray-dark"
