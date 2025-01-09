@@ -36,3 +36,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
 ```
+
+## License
+
+[MIT License](https://github.com/Liquid-JS/release-tag/blob/master/LICENSE)
