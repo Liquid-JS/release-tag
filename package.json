@@ -42,7 +42,7 @@
         "lint": "eslint . --fix",
         "prepublishOnly": "npm run build",
         "prepare": "husky",
-        "release": "git diff --exit-code && commit-and-tag-version && git push --follow-tags origin",
+        "release": "yarn build && git diff --exit-code && commit-and-tag-version --no-verify && git push --follow-tags origin",
         "prepack": "clean-package",
         "postpack": "clean-package restore"
     },
