@@ -397,7 +397,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:9.17.0, @eslint/js@npm:^9.17.0":
+"@eslint/js@npm:9.17.0":
   version: 9.17.0
   resolution: "@eslint/js@npm:9.17.0"
   checksum: 10/1a89e62f5c50e75d44565b7f3b91701455a999132c991e10bac59c118fbb54bdd54be22b9bda1ac730f78a2e64604403d65ce5dd7726d80b2632982cfc3d84ac
@@ -1173,17 +1173,6 @@ __metadata:
     "@typescript-eslint/types": "npm:8.19.1"
     eslint-visitor-keys: "npm:^4.2.0"
   checksum: 10/510eb196e7b7d59d3981d672a75454615159e931fe78e2a64b09607c3cfa45110709b0eb5ac3dd271d757a0d98cf4868ad2f45bf9193f96e9efec3efa92a19c1
-  languageName: node
-  linkType: hard
-
-"@vercel/ncc@npm:^0.38.3":
-  version: 0.38.3
-  resolution: "@vercel/ncc@npm:0.38.3"
-  dependencies:
-    node-gyp: "npm:latest"
-  bin:
-    ncc: dist/ncc/cli.js
-  checksum: 10/f1a05a58e9c90d6940027b628590715a62bf1611c47bca546ad51bd6a0e8d25ce64c1c39eb27ba0b6747017182cb59ec42088da8d6530a6d561e9e1a4e8c9941
   languageName: node
   linkType: hard
 
@@ -5474,7 +5463,6 @@ __metadata:
     "@actions/github": "npm:^6.0.0"
     "@commitlint/cli": "npm:^19.6.1"
     "@commitlint/config-conventional": "npm:^19.6.0"
-    "@eslint/js": "npm:^9.17.0"
     "@liquid-js/rollup-plugin-closure-compiler": "npm:^0.27.8"
     "@rollup/plugin-commonjs": "npm:^28.0.2"
     "@rollup/plugin-json": "npm:^6.1.0"
@@ -5483,7 +5471,6 @@ __metadata:
     "@rollup/plugin-typescript": "npm:^12.1.2"
     "@stylistic/eslint-plugin": "npm:^2.12.1"
     "@types/node": "npm:<23.0.0"
-    "@vercel/ncc": "npm:^0.38.3"
     changelogen: "npm:^0.5.7"
     commit-and-tag-version: "npm:^12.5.0"
     eslint: "npm:^9.17.0"
