@@ -4,8 +4,8 @@
 
 This is a fork of [actions/create-release](https://github.com/actions/create-release) with the following changes:
 
-- Automatically determine whether a tag is a pre-release by checking for presence of `-` followed by a letter in the tag name.
-- Use [changelogen](https://github.com/unjs/changelogen) to generate the changelog as release body.
+-   Automatically determine whether a tag is a pre-release by checking for presence of `-` followed by a letter in the tag name.
+-   Use [changelogen](https://github.com/unjs/changelogen) to generate the changelog as release body.
 
 ## Usage
 
@@ -16,7 +16,7 @@ name: Create release
 on:
   push:
     tags:
-      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+      - v* # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:

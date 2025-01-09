@@ -1,65 +1,67 @@
 {
-  "name": "release-tag",
-  "version": "4.1.0",
-  "description": "Create a release on tag push.",
-  "type": "module",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
-    "changelogen": "^0.5.7"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^19.6.1",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@eslint/js": "^9.17.0",
-    "@liquid-js/rollup-plugin-closure-compiler": "^0.27.6",
-    "@rollup/plugin-commonjs": "^28.0.2",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "@types/node": "<23.0.0",
-    "@vercel/ncc": "^0.38.3",
-    "eslint": "^9.17.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "google-closure-compiler": "^20240317.0.0",
-    "husky": "^9.1.7",
-    "npm-check-updates": "^17.1.13",
-    "prettier": "^3.4.2",
-    "rimraf": "^6.0.1",
-    "rollup": "^4.30.0",
-    "standard-version": "^9.5.0",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.19.0"
-  },
-  "scripts": {
-    "build": "rimraf lib && rollup -c rollup.config.ts --configPlugin \"@rollup/plugin-typescript={tsconfig:'tsconfig.test.json'}\"",
-    "lint": "prettier -w . && eslint . --fix",
-    "prepublishOnly": "npm run build",
-    "prepare": "husky",
-    "release": "git diff --exit-code && standard-version && git push --follow-tags origin",
-    "prepack": "clean-package",
-    "postpack": "clean-package restore"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Liquid-JS/fragql.git"
-  },
-  "author": "HitkoDev <development@hitko.si>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Liquid-JS/fragql/issues"
-  },
-  "packageManager": "yarn@4.6.0",
-  "clean-package": {
-    "remove": [
-      "packageManager",
-      "scripts",
-      "devDependencies",
-      "clean-package"
-    ]
-  }
+    "name": "release-tag",
+    "version": "4.1.0",
+    "description": "Create a release on tag push.",
+    "type": "module",
+    "main": "./lib/index.js",
+    "types": "./lib/index.d.ts",
+    "dependencies": {
+        "@actions/core": "^1.11.1",
+        "@actions/github": "^6.0.0",
+        "changelogen": "^0.5.7"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.6.1",
+        "@commitlint/config-conventional": "^19.6.0",
+        "@eslint/js": "^9.17.0",
+        "@liquid-js/rollup-plugin-closure-compiler": "^0.27.6",
+        "@rollup/plugin-commonjs": "^28.0.2",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^16.0.0",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^12.1.2",
+        "@stylistic/eslint-plugin": "^2.12.1",
+        "@types/node": "<23.0.0",
+        "@vercel/ncc": "^0.38.3",
+        "commit-and-tag-version": "^12.5.0",
+        "eslint": "^9.17.0",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-jsdoc": "^50.6.1",
+        "eslint-plugin-prefer-arrow-functions": "^3.4.2",
+        "eslint-plugin-unused-imports": "^4.1.4",
+        "google-closure-compiler": "^20240317.0.0",
+        "husky": "^9.1.7",
+        "npm-check-updates": "^17.1.13",
+        "rimraf": "^6.0.1",
+        "rollup": "^4.30.0",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.19.0"
+    },
+    "scripts": {
+        "build": "rimraf lib && rollup -c rollup.config.ts --configPlugin @rollup/plugin-typescript",
+        "lint": "eslint . --fix",
+        "prepublishOnly": "npm run build",
+        "prepare": "husky",
+        "release": "git diff --exit-code && commit-and-tag-version && git push --follow-tags origin",
+        "prepack": "clean-package",
+        "postpack": "clean-package restore"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Liquid-JS/fragql.git"
+    },
+    "author": "HitkoDev <development@hitko.si>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Liquid-JS/fragql/issues"
+    },
+    "packageManager": "yarn@4.6.0",
+    "clean-package": {
+        "remove": [
+            "packageManager",
+            "scripts",
+            "devDependencies",
+            "clean-package"
+        ]
+    }
 }
