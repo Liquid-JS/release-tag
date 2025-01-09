@@ -1,6 +1,6 @@
 {
     "name": "release-tag",
-    "version": "4.2.1",
+    "version": "4.2.2",
     "description": "Create a release on tag push.",
     "type": "module",
     "main": "./lib/index.js",
