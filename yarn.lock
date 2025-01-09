@@ -547,9 +547,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@liquid-js/rollup-plugin-closure-compiler@npm:^0.27.6":
-  version: 0.27.6
-  resolution: "@liquid-js/rollup-plugin-closure-compiler@npm:0.27.6"
+"@liquid-js/rollup-plugin-closure-compiler@npm:^0.27.8":
+  version: 0.27.8
+  resolution: "@liquid-js/rollup-plugin-closure-compiler@npm:0.27.8"
   dependencies:
     "@ampproject/remapping": "npm:^2.3.0"
     acorn: "npm:^8.14.0"
@@ -558,8 +558,8 @@ __metadata:
     magic-string: "npm:^0.30.17"
   peerDependencies:
     google-closure-compiler: ^20240317.0.0
-    rollup: ">=4.28"
-  checksum: 10/ec16002965e98abaf1073c7afbe8ba54c8df197c992dccd8670fa892798a669f75ae89f27ae2acd7bfcf8aa08113cf734d078cbbbd8a8bf7dcaaa4d002ecd651
+    rollup: ">=4.30"
+  checksum: 10/481506cc82002f82553cddb2b45412559da71cb74ee98ebacdb24734cb5f4438b1580b3977d497274b13235352cbe40305926b63f737d427ff2e424b9affe21d
   languageName: node
   linkType: hard
 
@@ -5475,7 +5475,7 @@ __metadata:
     "@commitlint/cli": "npm:^19.6.1"
     "@commitlint/config-conventional": "npm:^19.6.0"
     "@eslint/js": "npm:^9.17.0"
-    "@liquid-js/rollup-plugin-closure-compiler": "npm:^0.27.6"
+    "@liquid-js/rollup-plugin-closure-compiler": "npm:^0.27.8"
     "@rollup/plugin-commonjs": "npm:^28.0.2"
     "@rollup/plugin-json": "npm:^6.1.0"
     "@rollup/plugin-node-resolve": "npm:^16.0.0"
@@ -5495,9 +5495,9 @@ __metadata:
     husky: "npm:^9.1.7"
     npm-check-updates: "npm:^17.1.13"
     rimraf: "npm:^6.0.1"
-    rollup: "npm:^4.30.0"
-    typescript: "npm:^5.7.2"
-    typescript-eslint: "npm:^8.19.0"
+    rollup: "npm:^4.30.1"
+    typescript: "npm:^5.7.3"
+    typescript-eslint: "npm:^8.19.1"
   languageName: unknown
   linkType: soft
 
@@ -5606,7 +5606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^4.30.0":
+"rollup@npm:^4.30.1":
   version: 4.30.1
   resolution: "rollup@npm:4.30.1"
   dependencies:
@@ -6506,7 +6506,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript-eslint@npm:^8.19.0":
+"typescript-eslint@npm:^8.19.1":
   version: 8.19.1
   resolution: "typescript-eslint@npm:8.19.1"
   dependencies:
@@ -6520,7 +6520,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.7.2":
+"typescript@npm:^5.7.3":
   version: 5.7.3
   resolution: "typescript@npm:5.7.3"
   bin:
@@ -6530,7 +6530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^5.7.2#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A^5.7.3#optional!builtin<compat/typescript>":
   version: 5.7.3
   resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
   bin:
