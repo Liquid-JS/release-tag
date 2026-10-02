@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [4.2.5](https://github.com/Liquid-JS/fragql/compare/v4.2.4...v4.2.5) (2026-10-02)
+
 ## [4.2.4](https://github.com/Liquid-JS/fragql/compare/v4.2.3...v4.2.4) (2026-01-20)
 
 ## [4.2.3](https://github.com/Liquid-JS/fragql/compare/v4.2.2...v4.2.3) (2025-09-02)
