@@ -21,7 +21,7 @@
         "@rollup/plugin-typescript": "^12.3.0",
         "@stylistic/eslint-plugin": "^5.10.0",
         "@types/node": "<25.0.0",
-        "commit-and-tag-version": "^13.2.1",
+        "commit-and-tag-version": "<13.1.0",
         "eslint": "^10.11.0",
         "eslint-plugin-import": "^2.32.0",
         "eslint-plugin-jsdoc": "^65.0.1",

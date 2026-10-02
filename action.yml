@@ -10,13 +10,11 @@ inputs:
   draft:
     description: "`true` to create a draft (unpublished) release, `false` to create a published one. Default: `false`"
     required: false
-    default: false
   no_contributors:
     description: "`true` to skip contributors section when generating changelog. Default: `false`"
     required: false
-    default: false
 runs:
-  using: "node20"
+  using: "node24"
   main: "lib/index.js"
 branding:
   icon: "tag"
