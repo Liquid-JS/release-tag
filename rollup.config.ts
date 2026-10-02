@@ -18,7 +18,9 @@ export default {
             inlineSources: true,
             tsconfig: 'tsconfig.lib.json'
         }),
-        nodeResolve(),
+        nodeResolve({
+            preferBuiltins: true
+        }),
         commonjs(),
         json(),
         /*compiler({
